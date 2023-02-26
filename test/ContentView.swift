@@ -30,7 +30,7 @@ struct NodeView: View {
                     }
                     
                     Button(action: {
-                        self.node.parent?.children.removeAll(where: { $0.id == self.node.id })
+                        self.node.children.removeAll()
                         self.tree?.save()
                     }) {
                         Image(systemName: "minus")
