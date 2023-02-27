@@ -6,19 +6,22 @@
 //
 
 import Foundation
+import CoreData
 
 class TreeViewModel: ObservableObject {
-    @Published var rootNode: Node
+    @Published var rootNode: NodeEntity
     
     init() {
-        let rootNode = NodeEntity(context: CoreDataStack.shared.context)
-//        {
-//            self.rootNode = rootNode
-//            print("dostal!!")
-//        } else {
-//            self.rootNode = Node()
-//            print("nedostal")
-//        }
-            self.rootNode.parent = nil
+        let fetchRequest = NodeEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "parent == nil")
+        let context = CoreDataStack.shared.context
+        do {
+            guard let node = try context.fetch(fetchRequest).first else { return }
+            self.rootNode = node
+        } catch {
+            print(error.localizedDescription)
+        }
+
+        self.rootNode.parent = nil
     }
 }
