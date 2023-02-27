@@ -9,24 +9,34 @@ import Foundation
 
 class TreeViewModel: ObservableObject {
     @Published var rootNode: Node
+
+    func save() {
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let archiveURL = documentsDirectory.appendingPathComponent("tree_state.json")
+        let jsonEncoder = JSONEncoder()
+        guard let jsonData = try? jsonEncoder.encode(rootNode) else { return }
+        do {
+            try jsonData.write(to: archiveURL, options: .noFileProtection)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
     
     init() {
-        if let data = UserDefaults.standard.data(forKey: "treeData"),
-           let rootNode = try? JSONDecoder().decode(Node.self, from: data) {
-            self.rootNode = rootNode
-            print("dostal!!")
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let archiveURL = documentsDirectory.appendingPathComponent("tree_state.json")
+        guard let jsonData = try? Data(contentsOf: archiveURL) else {
+            self.rootNode = Node()
+            return
+        }
+        let jsonDecoder = JSONDecoder()
+        
+        if let node = try? jsonDecoder.decode(Node.self, from: jsonData) {
+            self.rootNode = node
         } else {
             self.rootNode = Node()
-            print("nedostal")
         }
         
         self.rootNode.parent = nil
-    }
-    
-    func save() {
-        if let data = try? JSONEncoder().encode(rootNode) {
-            UserDefaults.standard.set(data, forKey: "treeData")
-            print("saved")
-        }
     }
 }
