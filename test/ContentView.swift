@@ -24,14 +24,12 @@ struct NodeView: View {
                 HStack {
                     Button(action: {
                         self.node.children.append(Node(parent: self.node))
-                        self.tree?.save()
                     }) {
                         Image(systemName: "plus")
                     }
                     
                     Button(action: {
                         self.node.children.removeAll()
-                        self.tree?.save()
                     }) {
                         Image(systemName: "minus")
                     }

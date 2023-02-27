@@ -9,33 +9,32 @@
 import Foundation
 import CoreData
 
-
 extension NodeEntity {
 
     @nonobjc public class func fetchRequest() -> NSFetchRequest<NodeEntity> {
         return NSFetchRequest<NodeEntity>(entityName: "NodeEntity")
     }
 
-    @NSManaged public var name: NSObject?
+    @NSManaged public var name: String?
     @NSManaged public var parent: NodeEntity?
-    @NSManaged public var child: NSSet?
+    @NSManaged public var children: NSSet?
 
 }
 
-// MARK: Generated accessors for child
+// MARK: Generated accessors for children
 extension NodeEntity {
 
-    @objc(addChildObject:)
-    @NSManaged public func addToChild(_ value: NodeEntity)
+    @objc(addChildrenObject:)
+    @NSManaged public func addToChildren(_ value: NodeEntity)
 
-    @objc(removeChildObject:)
-    @NSManaged public func removeFromChild(_ value: NodeEntity)
+    @objc(removeChildrenObject:)
+    @NSManaged public func removeFromChildren(_ value: NodeEntity)
 
-    @objc(addChild:)
-    @NSManaged public func addToChild(_ values: NSSet)
+    @objc(addChildren:)
+    @NSManaged public func addToChildren(_ values: NSSet)
 
-    @objc(removeChild:)
-    @NSManaged public func removeFromChild(_ values: NSSet)
+    @objc(removeChildren:)
+    @NSManaged public func removeFromChildren(_ values: NSSet)
 
 }
 
